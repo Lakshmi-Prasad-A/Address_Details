@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddressServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Address_Details</a> &gt; <a href="index.source.html" class="el_package">com.insignia.serviceImpl</a> &gt; <span class="el_source">AddressServiceImpl.java</span></div><h1>AddressServiceImpl.java</h1><pre class="source lang-java linenums">package com.insignia.serviceImpl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.insignia.customExceptions.TokenExpiredException;
+import com.insignia.daoInterface.AddressDaoInterface;
+import com.insignia.entity.AddressDetails;
+import com.insignia.model.AddressRequest;
+import com.insignia.model.AddressResponse;
+import com.insignia.serviceInterface.AddressServiceInterface;
+import com.insignia.stringConstant.AddressValidatorConstants;
+
+@Service
+<span class="fc" id="L19">public class AddressServiceImpl implements AddressServiceInterface {</span>
+
+	@Autowired
+	private AddressDaoInterface daoRepo;
+
+	@Override
+	public AddressResponse saveAddress(AddressRequest addressReq)
+			throws TokenExpiredException {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">		if (isTokenNotValid(addressReq.getCustomer_sequence_number()))</span>
+<span class="fc" id="L28">			throw new TokenExpiredException(AddressValidatorConstants.validateTokenErrorCode,</span>
+					AddressValidatorConstants.validateToken);
+
+<span class="fc" id="L31">		return daoRepo.saveAddress(addressReq);</span>
+	}
+
+	@Transactional
+	@Override
+	public AddressResponse updateAddress(AddressRequest addressReq)
+			throws TokenExpiredException {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if (isTokenNotValid(addressReq.getCustomer_sequence_number()))</span>
+<span class="fc" id="L39">			throw new TokenExpiredException(AddressValidatorConstants.validateTokenErrorCode,</span>
+					AddressValidatorConstants.validateToken);
+
+<span class="fc" id="L42">		return daoRepo.updateAddress(addressReq);</span>
+
+	}
+
+	@Override
+	public void deleteByAddressId(Integer sequenceNumber, Long customer_sequence_number) throws TokenExpiredException {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">		if (isTokenNotValid(customer_sequence_number))</span>
+<span class="fc" id="L49">			throw new TokenExpiredException(AddressValidatorConstants.validateTokenErrorCode,</span>
+					AddressValidatorConstants.validateToken);
+<span class="fc" id="L51">		daoRepo.deleteByAddressId(sequenceNumber);</span>
+
+<span class="fc" id="L53">	}</span>
+
+	@Override
+	public void deleteAddressForCustomer(Long customer_sequence_number) throws TokenExpiredException {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (isTokenNotValid(customer_sequence_number))</span>
+<span class="fc" id="L58">			throw new TokenExpiredException(AddressValidatorConstants.validateTokenErrorCode,</span>
+					AddressValidatorConstants.validateToken);
+
+<span class="fc" id="L61">		daoRepo.deleteAddressForCustomer(customer_sequence_number);</span>
+
+<span class="fc" id="L63">	}</span>
+
+	@Override
+	public List&lt;AddressDetails&gt; getAddressList(Long customer_sequence_number) throws TokenExpiredException {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">		if (isTokenNotValid(customer_sequence_number))</span>
+<span class="fc" id="L68">			throw new TokenExpiredException(AddressValidatorConstants.validateTokenErrorCode,</span>
+					AddressValidatorConstants.validateToken);
+
+<span class="fc" id="L71">		return daoRepo.getAddressList(customer_sequence_number);</span>
+	}
+
+	private Boolean isTokenNotValid(Long customer_sequence_number) {
+<span class="fc" id="L75">		return daoRepo.isTokenNotValid(customer_sequence_number);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

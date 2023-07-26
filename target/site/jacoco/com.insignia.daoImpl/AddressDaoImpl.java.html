@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddressDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Address_Details</a> &gt; <a href="index.source.html" class="el_package">com.insignia.daoImpl</a> &gt; <span class="el_source">AddressDaoImpl.java</span></div><h1>AddressDaoImpl.java</h1><pre class="source lang-java linenums">package com.insignia.daoImpl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.insignia.daoInterface.AddressDaoInterface;
+import com.insignia.entity.AddressDetails;
+import com.insignia.model.AddressRequest;
+import com.insignia.model.AddressResponse;
+import com.insignia.repo.AddressRepository;
+
+
+@Repository
+public class AddressDaoImpl implements AddressDaoInterface {
+
+	@Autowired
+	private AddressRepository addressRepo;
+
+	@Autowired
+	private EntityManager entityManager;
+
+	
+	public AddressDaoImpl(AddressRepository addressRepo, EntityManager entityManager) {
+<span class="fc" id="L30">		super();</span>
+<span class="fc" id="L31">		this.addressRepo = addressRepo;</span>
+<span class="fc" id="L32">		this.entityManager = entityManager;</span>
+		
+<span class="fc" id="L34">	}</span>
+
+
+	@Override
+	public AddressResponse saveAddress(AddressRequest addressReq){
+
+<span class="fc" id="L40">		addressRepo.saveAddress(Long.valueOf(addressReq.getCustomer_sequence_number()), addressReq.getAddressLine1(),</span>
+<span class="fc" id="L41">				addressReq.getAddressLine2(), addressReq.getLandmark(), addressReq.getCity(), addressReq.getState(),</span>
+<span class="fc" id="L42">				addressReq.getCountry(), addressReq.getZipCode(), Long.valueOf(addressReq.getMobileNumber()),</span>
+<span class="fc" id="L43">				addressReq.getEmailId(), addressReq.getIsDefaultAddress(), addressReq.getIsBillingAddress(),</span>
+<span class="fc" id="L44">				Long.valueOf(addressReq.getLandlineNumber()));</span>
+
+<span class="fc" id="L46">		AddressResponse addressRes = new AddressResponse();</span>
+<span class="fc" id="L47">		BeanUtils.copyProperties(addressReq, addressRes);</span>
+
+<span class="fc" id="L49">		return addressRes;</span>
+	}
+
+	@Override
+	public AddressResponse updateAddress(AddressRequest addressReq) {
+
+<span class="fc" id="L55">		StringBuilder queryBuilder = new StringBuilder();</span>
+<span class="fc" id="L56">		queryBuilder.append(&quot;UPDATE address_details SET &quot;);</span>
+
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">		if (addressReq.isAddressLine1Updated()) {</span>
+<span class="fc" id="L59">			queryBuilder.append(&quot;address_line_1= '&quot; + addressReq.getAddressLine1()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">		if (addressReq.isAddressLine2Updated()) {</span>
+<span class="fc" id="L63">			queryBuilder.append(&quot;,address_line_2= '&quot; + addressReq.getAddressLine2()).append(&quot;'&quot;);</span>
+
+		}
+
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">		if (addressReq.isLandMarkUpdated()) {</span>
+<span class="fc" id="L68">			queryBuilder.append(&quot;,landmark= '&quot; + addressReq.getLandmark()).append(&quot;'&quot;);</span>
+
+		}
+
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">		if (addressReq.isCityUpdated()) {</span>
+<span class="fc" id="L73">			queryBuilder.append(&quot;,city= '&quot; + addressReq.getCity()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (addressReq.isStateUpdated()) {</span>
+<span class="fc" id="L77">			queryBuilder.append(&quot;,state= '&quot; + addressReq.getState()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">		if (addressReq.isCountryUpdated()) {</span>
+<span class="fc" id="L81">			queryBuilder.append(&quot;,country= '&quot; + addressReq.getCountry()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">		if (addressReq.isZipCodeUpdated()) {</span>
+<span class="fc" id="L85">			queryBuilder.append(&quot;,Zip_code= '&quot; + addressReq.getZipCode()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (addressReq.isMobileNumberUpdated()) {</span>
+<span class="fc" id="L89">			queryBuilder.append(&quot;,mobile_number= '&quot; + addressReq.getMobileNumber()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">		if (addressReq.isLandLineNumberUpdated()) {</span>
+<span class="fc" id="L93">			queryBuilder.append(&quot;,landline_number= '&quot; + addressReq.getLandlineNumber()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">		if (addressReq.isEmailAddressUpdated()) {</span>
+<span class="fc" id="L97">			queryBuilder.append(&quot;,email_id= '&quot; + addressReq.getEmailId()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		if (addressReq.isDefaultAddressUpdated()) {</span>
+<span class="fc" id="L101">			queryBuilder.append(&quot;,is_default_address= '&quot; + addressReq.getIsDefaultAddress()).append(&quot;'&quot;);</span>
+
+		}
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">		if (addressReq.isBillingAddressUpdated()) {</span>
+<span class="fc" id="L105">			queryBuilder.append(&quot;,is_billing_address= '&quot; + addressReq.getIsBillingAddress()).append(&quot;'&quot;);</span>
+
+		}
+
+<span class="fc" id="L109">		queryBuilder.append(&quot; WHERE customer_sequence_number = :customer_sequence_number&quot;);</span>
+
+<span class="fc" id="L111">		String queryString = queryBuilder.toString();</span>
+
+<span class="fc" id="L113">		Query query = entityManager.createNativeQuery(queryString);</span>
+
+<span class="fc" id="L115">		query.setParameter(&quot;customer_sequence_number&quot;, addressReq.getCustomer_sequence_number());</span>
+
+<span class="fc" id="L117">		query.executeUpdate();</span>
+
+<span class="fc" id="L119">		String selectQueryString = &quot;SELECT * FROM address_details WHERE sequence_number = :sequence_number&quot;;</span>
+
+<span class="fc" id="L121">		Query selectQuery = entityManager.createNativeQuery(selectQueryString, AddressDetails.class);</span>
+
+<span class="fc" id="L123">		selectQuery.setParameter(&quot;sequence_number&quot;, addressReq.getSequenceNumber());</span>
+
+<span class="fc" id="L125">		AddressDetails updatedAddress = (AddressDetails) selectQuery.getSingleResult();</span>
+
+<span class="fc" id="L127">		AddressResponse response = new AddressResponse();</span>
+
+<span class="fc" id="L129">		response.setAddressLine1(updatedAddress.getAddressLine1());</span>
+<span class="fc" id="L130">		response.setAddressLine2(updatedAddress.getAddressLine2());</span>
+<span class="fc" id="L131">		response.setLandmark(updatedAddress.getLandmark());</span>
+<span class="fc" id="L132">		response.setCity(updatedAddress.getCity());</span>
+<span class="fc" id="L133">		response.setState(updatedAddress.getState());</span>
+<span class="fc" id="L134">		response.setCountry(updatedAddress.getCountry());</span>
+<span class="fc" id="L135">		response.setZipCode(updatedAddress.getZipCode());</span>
+<span class="fc" id="L136">		response.setMobileNumber(updatedAddress.getMobileNumber());</span>
+<span class="fc" id="L137">		response.setLandlineNumber(updatedAddress.getLandlineNumber());</span>
+<span class="fc" id="L138">		response.setEmailId(updatedAddress.getEmailId());</span>
+<span class="fc" id="L139">		response.setDefaultAddress(updatedAddress.isDefaultAddress());</span>
+<span class="fc" id="L140">		response.setBillingAddress(updatedAddress.isBillingAddress());</span>
+
+<span class="fc" id="L142">		return response;</span>
+
+	}
+
+	@Override
+	public void deleteByAddressId(Integer sequenceNumber) {
+<span class="fc" id="L148">		addressRepo.deleteByAddressId(sequenceNumber);</span>
+
+<span class="fc" id="L150">	}</span>
+
+	@Override
+	public void deleteAddressForCustomer(Long customer_sequence_number) {
+<span class="fc" id="L154">		addressRepo.deleteAddressForCustomer(customer_sequence_number);</span>
+
+<span class="fc" id="L156">	}</span>
+
+	@Override
+	public List&lt;AddressDetails&gt; getAddressList(Long customer_sequence_number) {
+<span class="fc" id="L160">		return addressRepo.getAddressList(customer_sequence_number);</span>
+	}
+
+	public Boolean isTokenNotValid(Long customer_sequence_number) {
+<span class="fc" id="L164">		return addressRepo.isTokenNotValid(customer_sequence_number).isEmpty();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

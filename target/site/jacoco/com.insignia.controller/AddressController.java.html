@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddressController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Address_Details</a> &gt; <a href="index.source.html" class="el_package">com.insignia.controller</a> &gt; <span class="el_source">AddressController.java</span></div><h1>AddressController.java</h1><pre class="source lang-java linenums">package com.insignia.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.insignia.addressValidator.AddressValidator;
+import com.insignia.constant.AddressStringConstant;
+import com.insignia.customExceptions.InvalidInputParametersException;
+import com.insignia.customExceptions.TokenExpiredException;
+import com.insignia.model.AddressRequest;
+import com.insignia.model.AddressResponse;
+import com.insignia.serviceInterface.AddressServiceInterface;
+import com.insignia.stringConstant.AddressValidatorConstants;
+
+@RestController
+<span class="fc" id="L25">public class AddressController {</span>
+
+	@Autowired
+	private AddressServiceInterface serviceRepo;
+
+	@PostMapping(&quot;/saveAddress&quot;)
+	public ResponseEntity&lt;?&gt; saveAddress(@RequestBody AddressRequest addressReq) {
+		
+		try {
+<span class="fc" id="L34">			AddressValidator.ValidateAddressLine1(addressReq.getAddressLine1(),</span>
+<span class="fc" id="L35">					AddressStringConstant.addresLine1length);</span>
+<span class="fc" id="L36">			AddressValidator.ValidateCity(addressReq.getCity(), AddressStringConstant.city);</span>
+<span class="fc" id="L37">			AddressValidator.ValidateState(addressReq.getState(), AddressStringConstant.state);</span>
+<span class="fc" id="L38">			AddressValidator.ValidateCountry(addressReq.getCountry(), AddressStringConstant.country);</span>
+<span class="fc" id="L39">			AddressValidator.ValidateZipCode(addressReq.getZipCode(), AddressStringConstant.zipCode);</span>
+
+<span class="fc" id="L41">			return ResponseEntity.ok(serviceRepo.saveAddress(addressReq));</span>
+
+<span class="fc" id="L43">		} catch (InvalidInputParametersException ex) {</span>
+<span class="fc" id="L44">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L45">					.body(new AddressResponse(ex.getErrorCode(), ex.getStrMsg()));</span>
+			
+<span class="fc" id="L47">		} catch (TokenExpiredException ex) {</span>
+<span class="fc" id="L48">			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AddressResponse(</span>
+					AddressValidatorConstants.validateTokenErrorCode, AddressValidatorConstants.validateToken));
+
+<span class="fc" id="L51">		} catch (DataIntegrityViolationException e) {</span>
+<span class="fc" id="L52">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L53">					.body(new AddressResponse(AddressValidatorConstants.validateAddressErrorCode,</span>
+							AddressValidatorConstants.validateAddressMessage));
+
+<span class="fc" id="L56">		} catch (Exception e) {</span>
+<span class="fc" id="L57">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L58">					.body(new AddressResponse(AddressValidatorConstants.validateUnexpectedErrorCode,</span>
+							AddressValidatorConstants.validateUnexpectedErrorMessage));
+		}
+
+	}
+	
+	@PutMapping(&quot;/updateAddress&quot;)
+	public ResponseEntity&lt;?&gt; updateAddress(@RequestBody AddressRequest addressReq){
+		try {
+<span class="fc" id="L67">			AddressValidator.ValidateAddressLine1(addressReq.getAddressLine1(),</span>
+<span class="fc" id="L68">					AddressStringConstant.addresLine1length);</span>
+<span class="fc" id="L69">			AddressValidator.ValidateCity(addressReq.getCity(), AddressStringConstant.city);</span>
+<span class="fc" id="L70">			AddressValidator.ValidateState(addressReq.getState(), AddressStringConstant.state);</span>
+<span class="fc" id="L71">			AddressValidator.ValidateCountry(addressReq.getCountry(), AddressStringConstant.country);</span>
+<span class="fc" id="L72">			AddressValidator.ValidateZipCode(addressReq.getZipCode(), AddressStringConstant.zipCode);</span>
+
+<span class="fc" id="L74">			return ResponseEntity.ok(serviceRepo.updateAddress(addressReq));</span>
+
+<span class="fc" id="L76">		} catch (InvalidInputParametersException ex) {</span>
+<span class="fc" id="L77">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L78">					.body(new AddressResponse(ex.getErrorCode(), ex.getStrMsg()));</span>
+
+<span class="fc" id="L80">		} catch (TokenExpiredException ex) {</span>
+<span class="fc" id="L81">			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AddressResponse(</span>
+					AddressValidatorConstants.validateTokenErrorCode, AddressValidatorConstants.validateToken));
+
+<span class="fc" id="L84">		} catch (DataIntegrityViolationException e) {</span>
+<span class="fc" id="L85">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L86">					.body(new AddressResponse(AddressValidatorConstants.validateAddressErrorCode,</span>
+							AddressValidatorConstants.validateAddressMessage));
+
+<span class="fc" id="L89">		} catch (Exception e) {</span>
+<span class="fc" id="L90">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L91">					.body(new AddressResponse(AddressValidatorConstants.validateUnexpectedErrorCode,</span>
+							AddressValidatorConstants.validateUnexpectedErrorMessage));
+		}
+	}
+
+	@DeleteMapping(&quot;/deleteAddress/{sequenceNumber}/{customer_sequence_number}&quot;)
+	public ResponseEntity&lt;?&gt; deleteByAddressId(@PathVariable Integer sequenceNumber,
+			@PathVariable Long customer_sequence_number) {
+		try {
+
+<span class="fc" id="L101">			serviceRepo.deleteByAddressId(sequenceNumber, customer_sequence_number);</span>
+<span class="fc" id="L102">			return ResponseEntity.ok(&quot;Record Successfully Deleted&quot;);</span>
+
+<span class="fc" id="L104">		} catch (TokenExpiredException ex) {</span>
+<span class="fc" id="L105">			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AddressResponse(</span>
+					AddressValidatorConstants.validateTokenErrorCode, AddressValidatorConstants.validateToken));
+<span class="fc" id="L107">		} catch (Exception e) {</span>
+<span class="fc" id="L108">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L109">					.body(new AddressResponse(AddressValidatorConstants.validateUnexpectedErrorCode,</span>
+							AddressValidatorConstants.validateUnexpectedErrorMessage));
+		}
+	}
+
+	@DeleteMapping(&quot;/deleteCustomer/{customer_sequence_number}&quot;)
+	public ResponseEntity&lt;?&gt; deleteAddressForCustomer(@PathVariable Long customer_sequence_number){
+		try {
+
+<span class="fc" id="L118">			serviceRepo.deleteAddressForCustomer(customer_sequence_number);</span>
+<span class="fc" id="L119">			return ResponseEntity.ok(&quot;Record Successfully Deleted&quot;);</span>
+
+<span class="fc" id="L121">		} catch (TokenExpiredException ex) {</span>
+<span class="fc" id="L122">			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AddressResponse(</span>
+					AddressValidatorConstants.validateTokenErrorCode, AddressValidatorConstants.validateToken));
+
+<span class="fc" id="L125">		} catch (Exception e) {</span>
+<span class="fc" id="L126">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L127">					.body(new AddressResponse(AddressValidatorConstants.validateUnexpectedErrorCode,</span>
+							AddressValidatorConstants.validateUnexpectedErrorMessage));
+		}
+
+	}
+
+	@GetMapping(&quot;/getAddress/{customer_sequence_number}&quot;)
+	public ResponseEntity&lt;?&gt; getAddressList(@PathVariable Long customer_sequence_number)  {
+		
+		try {
+<span class="fc" id="L137">			return ResponseEntity.ok(serviceRepo.getAddressList(customer_sequence_number));</span>
+
+<span class="fc" id="L139">		} catch (TokenExpiredException ex) {</span>
+<span class="fc" id="L140">			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AddressResponse(</span>
+					AddressValidatorConstants.validateTokenErrorCode, AddressValidatorConstants.validateToken));
+
+<span class="fc" id="L143">		} catch (Exception e) {</span>
+<span class="fc" id="L144">			return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L145">					.body(new AddressResponse(AddressValidatorConstants.validateUnexpectedErrorCode,</span>
+							AddressValidatorConstants.validateUnexpectedErrorMessage));
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,13 @@
+com\insignia\daoImpl\AddressDaoImpl.class
+com\insignia\constant\AddressStringConstant.class
+com\insignia\daoInterface\AddressDaoInterface.class
+com\insignia\model\AddressRequest.class
+com\insignia\repo\CustomerBasicDetailsRepo.class
+com\insignia\AddressApplication.class
+com\insignia\controller\AddressController.class
+com\insignia\entity\AddressDetails.class
+com\insignia\model\AddressResponse.class
+com\insignia\serviceInterface\AddressServiceInterface.class
+com\insignia\repo\AddressRepository.class
+com\insignia\serviceImpl\AddressServiceImpl.class
+com\insignia\entity\CustomerBasicDetailsEntity.class

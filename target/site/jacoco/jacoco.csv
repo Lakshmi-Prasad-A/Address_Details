@@ -1,0 +1,5 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Address_Details,com.insignia.controller,AddressController,0,230,0,0,0,57,0,6,0,6
+Address_Details,com.insignia.serviceImpl,AddressServiceImpl,0,90,0,10,0,19,0,12,0,7
+Address_Details,com.insignia,AddressApplication,5,3,0,0,2,1,1,1,1,1
+Address_Details,com.insignia.daoImpl,AddressDaoImpl,0,382,12,12,0,67,12,7,0,7

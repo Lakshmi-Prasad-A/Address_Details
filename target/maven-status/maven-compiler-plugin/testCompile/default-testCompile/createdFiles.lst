@@ -1,0 +1,4 @@
+com\insignia\AddressApplicationTests.class
+com\insignia\serviceImpl\TestAddressServiceImpl.class
+com\insignia\controller\TestAddressController.class
+com\insignia\daoImpl\TestAddressDaoImpl.class

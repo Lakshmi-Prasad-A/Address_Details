@@ -1,0 +1,4 @@
+# Created at 2023-07-22T19:26:55.615
+Boot Manifest-JAR contains absolute paths in classpath 'D:\IDE projects\SpringBootPrograms\Insignia\Address_Details\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+
